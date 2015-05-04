@@ -1,4 +1,4 @@
-/** Copyright (c) 2015 Sailthru, Inc. | Generated: Thu Apr 30 16:50:49 EDT 2015 **/
+/** Copyright (c) 2015 Sailthru, Inc. | Custom HTTPS Scout Recommendation Version | Author: Joe Pikowski (jpikowski@sailthru.com) | Generated: Thu Apr 23 20:46:42 EDT 2015 **/
 SailthruScout = {
     config: {
         numVisible: 10
@@ -55,7 +55,15 @@ SailthruScout = {
     },
     track: function(e, d, a) {
         if (window.location.protocol === "https:") {
+            var f = SailthruScout.getCookie("sailthru_hid");
+            var g = SailthruScout.getCookie("sailthru_bid");
             var c = "https://horizon.sailthru.com/horizon/recommendtrack?d=" + SailthruScout.config.domain + "&event=" + d
+            if (f !== null) {
+                c += "&hid=" + f
+            }
+            if (g !== null) {
+                c += "&bid=" + g
+            }
         } else {
             var c = "http://" + SailthruScout.config.domain + "/horizon/recommendtrack?event=" + d
         } if (e) {
@@ -149,9 +157,38 @@ SailthruScout = {
             SailthruScout.fetchContent(SailthruScout.allContent.length + 10)
         }
     },
+    cookieIsEnabled: function(){
+        return navigator.cookieEnabled || (Array.prototype.indexOf.call(document, "cookie") >= 0 && (document.cookie.length > 0 || (document.cookie = "test").indexOf.call(document.cookie, "test") > -1))
+    },
+    getCookie: function(c){
+        var j, f, i, h, e;
+        if (SailthruScout.cookieIsEnabled() !== true) {
+            return null
+        }
+        i = c + "=";
+        f = document.cookie.split(";");
+        for (h = 0, e = f.length; h < e; h++) {
+            j = f[h];
+            while (j.charAt(0) === " ") {
+                j = j.substring(1, j.length)
+            }
+            if (j.indexOf(i) === 0) {
+                return j.substring(i.length, j.length)
+            }
+        }
+        return null;
+    },
     fetchContent: function(b) {
         if (window.location.protocol === "https:") {
+            var c = SailthruScout.getCookie("sailthru_hid");
+            var d = SailthruScout.getCookie("sailthru_bid");
             var a = "https://horizon.sailthru.com/horizon/recommend?format=jsonp&d=" + SailthruScout.config.domain + "&number=" + b + "&nospider=1"
+            if (c !== null) {
+                a += "&hid=" + c
+            }
+            if (d !== null) {
+                a += "&bid=" + d
+            }
         } else {
             var a = "http://" + SailthruScout.config.domain + "/horizon/recommend?format=jsonp&number=" + b + "&nospider=1"
         } if (SailthruScout.config.includeConsumed) {
