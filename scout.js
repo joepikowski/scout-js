@@ -25,7 +25,7 @@ SailthruScout = {
             }
         }
         SailthruScout.fetchContent(SailthruScout.config.numVisible + 5);
-        var set_scout_vars = "var index = SailthruScout.jq(this).parents('.content-item').index();var id = SailthruScout.visibleContent[index].id;var url = SailthruScout.visibleContent[index].url;";
+        var set_scout_vars = "var scoutElem = document.getElementById('sailthru-scout'); var parentDiv = this.parentNode; var index = Array.prototype.indexOf.call(scoutElem.querySelectorAll('.content-item'),parentDiv); var id = SailthruScout.visibleContent[index].id; var url = SailthruScout.visibleContent[index].url;";
 
         function mousedown_handler() {
             eval(set_scout_vars);
